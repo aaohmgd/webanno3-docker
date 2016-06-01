@@ -1,6 +1,5 @@
-# This Dockerfile is using parts of the webanno admin guide
+#This Dockerfile is using parts of the webanno admin guide
 # found in https://webanno.github.io/webanno/releases/2.3.1/docs/admin-guide.html 
-
 FROM tomcat:7-jre8
 
 MAINTAINER Arne Neumann, Florian Kuhn 
@@ -38,6 +37,7 @@ RUN mkdir /srv/webanno
 COPY settings.properties /srv/webanno/settings.properties
 RUN chown -R www-data /srv/webanno
 
+# expose the default webanno port
 EXPOSE 18080
 
 # If you wish minimal some editor, telnet and text-browser functionality
