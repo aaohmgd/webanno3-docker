@@ -49,4 +49,5 @@ EXPOSE 18080
 # and keeps running. Moreover, log output tells you if everything went ok 
 # The terminal be killed while the container and thus webanno remains active.
 #CMD bash /opt/webanno/bin/startup.sh && tail -f /opt/webanno/logs/catalina.out 
-CMD /start.sh
+COPY start.sh /start.sh
+CMD bash /start.sh
