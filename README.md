@@ -9,6 +9,9 @@ docker-compose build
 
 
 
+
+to build the image separately:
+
 ```shell
 docker build -t webanno3 https://github.com/fkuhn/webanno3-docker.git
 ```
