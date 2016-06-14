@@ -1,0 +1,67 @@
+Sending build context to Docker daemon 84.99 kB
+Step 1 : FROM tomcat:7-jre8
+ ---> da17a259fbf6
+Step 2 : MAINTAINER Florian Kuhn (https://github.com/fkuhn), Arne Neumann (https://github.com/arne-cl)
+ ---> Using cache
+ ---> c219f460c4b5
+Step 3 : RUN apt-get update
+ ---> Using cache
+ ---> a418d172861d
+Step 4 : RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget mysql-server mysql-client tomcat7-user tomcat7-admin
+ ---> Using cache
+ ---> 41ec61979682
+Step 5 : COPY create_webanno_db.sql mysql-init /tmp/
+ ---> Using cache
+ ---> 1353288ff85d
+Step 6 : RUN service mysql stop
+ ---> Using cache
+ ---> 47c1f88903ff
+Step 7 : RUN mysqld_safe --init-file=/tmp/mysql-init &
+ ---> Using cache
+ ---> e2478f60fb0e
+Step 8 : RUN rm /tmp/mysql-init
+ ---> Using cache
+ ---> a90fdc07a4b8
+Step 9 : RUN service mysql start &&     mysql -u root < /tmp/create_webanno_db.sql
+ ---> Using cache
+ ---> 2578146df7b6
+Step 10 : WORKDIR /opt
+ ---> Using cache
+ ---> 748c7f4ed4fc
+Step 11 : RUN wget --no-check-certificate  https://github.com/webanno/webanno/releases/download/webanno-3.0.0-beta-4/webanno-webapp-3.0.0-beta-4.war
+ ---> Using cache
+ ---> 2b224226835e
+Step 12 : RUN tomcat7-instance-create -p 18080 -c 18005 webanno &&     chown -R www-data /opt/webanno
+ ---> Using cache
+ ---> 61c07e72f309
+Step 13 : COPY webanno_initd /etc/init.d/webanno
+ ---> Using cache
+ ---> 21b34d4e1c84
+Step 14 : RUN mv /opt/webanno-webapp-3.0.0-beta-4.war /opt/webanno/webapps/webanno.war
+ ---> Using cache
+ ---> f76c81678ecd
+Step 15 : RUN chmod +x /etc/init.d/webanno
+ ---> Using cache
+ ---> 92f08dac598c
+Step 16 : RUN update-rc.d webanno defaults
+ ---> Using cache
+ ---> 1e8cab99f99c
+Step 17 : RUN mkdir /srv/webanno
+ ---> Using cache
+ ---> 2cb3b636ba3c
+Step 18 : COPY settings.properties /srv/webanno/settings.properties
+ ---> Using cache
+ ---> 041c9d5a2982
+Step 19 : RUN chown -R www-data /srv/webanno
+ ---> Using cache
+ ---> ea529b5cbbc8
+Step 20 : EXPOSE 18080
+ ---> Using cache
+ ---> 8f5ff8d9aa18
+Step 21 : COPY start.sh /start.sh
+ ---> Using cache
+ ---> 9b70e4bfd068
+Step 22 : CMD bash /start.sh
+ ---> Using cache
+ ---> 1174ac6d283b
+Successfully built 1174ac6d283b
