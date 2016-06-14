@@ -2,7 +2,7 @@
 # found in https://webanno.github.io/webanno/releases/2.3.1/docs/admin-guide.html 
 FROM tomcat:7-jre8
 
-MAINTAINER Arne Neumann, Florian Kuhn 
+MAINTAINER Florian Kuhn (https://github.com/fkuhn), Arne Neumann (https://github.com/arne-cl)
 
 RUN apt-get update
 # Install tomcat utilities (we will need tomcat7-instance-create) and mysql
@@ -48,4 +48,6 @@ EXPOSE 18080
 # to the shell so the container does not shutdown immediatly after command execution
 # and keeps running. Moreover, log output tells you if everything went ok 
 # The terminal be killed while the container and thus webanno remains active.
-CMD bash /opt/webanno/bin/startup.sh && tail -f /opt/webanno/logs/catalina.out 
+#CMD bash /opt/webanno/bin/startup.sh && tail -f /opt/webanno/logs/catalina.out 
+COPY start.sh /start.sh
+CMD bash /start.sh
