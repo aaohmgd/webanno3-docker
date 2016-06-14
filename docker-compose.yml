@@ -1,28 +1,32 @@
-version: '2'
-services:
-  db:
-    build: .
-    ports:
-     - "5000:5000"
-    volumes:
-     - .:/code
-    depends_on:
-     - redis
-  web:
-    depends_on:
-      - db
-    ports:
-      - 18080:18080
-
 mysql:
-  image: webanno_mysql
+
+  image: mysql:latest
+  container_name: mysql-webanno
+
+  #ports:
+  #   - 3306:3306
+
   environment:
-    - MYSQL_ROOT_PASSWORD=xxx
-    - MYSQL_DATABASE=xxx
-    - MYSQL_USER=xxx
-    - MYSQL_PASSWORD=xxx
-  volumes_from:
-    - web
+    MYSQL_ROOT_PASSWORD: 123456
+    MYSQL_USER: webanno'@'localhost
+    MYSQL_PASSWORD: t0t4llYSecreT
+    MYSQL_DATABASE: webanno
+
+
+
+
+web:
+
+  build: ./webanno
+  container_name: webanno
+  log_driver: "syslog"
+  links:
+    - mysql:mysql
+  volumes:
+    - application:/opt/webanno
+  #volumes_from:
+  #  - mysql
+  environment:
+    - DEBUG=true
   ports:
-    - 3324:3324
-  restart: always
+    - 18080:18080

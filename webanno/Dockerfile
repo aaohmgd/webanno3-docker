@@ -4,7 +4,7 @@ MAINTAINER Florian Kuhn (https://github.com/fkuhn), Arne Neumann (https://github
 
 RUN apt-get update
 # Install tomcat utilities (we will need tomcat7-instance-create) and mysql
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget mysql-server mysql-client tomcat7-user tomcat7-admin
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget tomcat7-user tomcat7-admin
 
 WORKDIR /opt
 # Download the latest webanno 3 release. change the path accordingly if updated
