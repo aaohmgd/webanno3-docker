@@ -1,0 +1,28 @@
+version: '2'
+services:
+  db:
+    build: .
+    ports:
+     - "5000:5000"
+    volumes:
+     - .:/code
+    depends_on:
+     - redis
+  web:
+    depends_on:
+      - db
+    ports:
+      - 18080:18080
+
+mysql:
+  image: webanno_mysql
+  environment:
+    - MYSQL_ROOT_PASSWORD=xxx
+    - MYSQL_DATABASE=xxx
+    - MYSQL_USER=xxx
+    - MYSQL_PASSWORD=xxx
+  volumes_from:
+    - web
+  ports:
+    - 3324:3324
+  restart: always

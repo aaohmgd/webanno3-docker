@@ -1,0 +1,41 @@
+FROM tomcat:7-jre8
+
+MAINTAINER Florian Kuhn (https://github.com/fkuhn), Arne Neumann (https://github.com/arne-cl)
+
+RUN apt-get update
+# Install tomcat utilities (we will need tomcat7-instance-create) and mysql
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y wget mysql-server mysql-client tomcat7-user tomcat7-admin
+
+WORKDIR /opt
+# Download the latest webanno 3 release. change the path accordingly if updated
+RUN wget --no-check-certificate  https://github.com/webanno/webanno/releases/download/webanno-3.0.0-beta-5/webanno-webapp-3.0.0-beta-5.war
+
+# Create a tomcat7 instance of webanno to operate on port 18080 as
+# shown in the official admin guide
+RUN tomcat7-instance-create -p 18080 -c 18005 webanno && \
+    chown -R www-data /opt/webanno
+# Rename the webanno webapp
+COPY webanno_initd /etc/init.d/webanno
+RUN mv /opt/webanno-webapp-3.0.0-beta-5.war /opt/webanno/webapps/webanno.war
+# Setup webanno as a service
+RUN chmod +x /etc/init.d/webanno
+RUN update-rc.d webanno defaults
+RUN mkdir /srv/webanno
+
+COPY settings.properties /srv/webanno/settings.properties
+RUN chown -R www-data /srv/webanno
+
+# expose the default webanno port
+EXPOSE 18080
+
+# If you wish minimal some editor, telnet and text-browser functionality
+# for interactive mode in docker, you can uncomment the following line:
+# RUN apt-get install -y nano telnet w3m
+
+# Start the webanno service and continously tail the tomcat log file output
+# to the shell so the container does not shutdown immediatly after command execution
+# and keeps running. Moreover, log output tells you if everything went ok
+# The terminal be killed while the container and thus webanno remains active.
+#CMD bash /opt/webanno/bin/startup.sh && tail -f /opt/webanno/logs/catalina.out
+COPY start.sh /start.sh
+CMD ["bash", "/start.sh"]
