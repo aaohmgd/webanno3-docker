@@ -13,7 +13,15 @@ echo -ne '#############             (66%)\r'
 sleep 1
 echo -ne '#######################   (100%)\r'
 echo -ne '\n'
-docker build -t webanno3 https://github.com/fkuhn/webanno3-docker.git | tee buildtest.log
+while true; do
+    read -p "Do you wish run the test without cached files?" yn
+    case $yn in
+        [Yy]* ) docker build --no-cache=true -t webanno3 https://github.com/fkuhn/webanno3-docker.git | tee buildtest.log; break;;
+        [Nn]* ) docker build -t webanno3 https://github.com/fkuhn/webanno3-docker.git | tee buildtest.log;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+# docker build -t webanno3 https://github.com/fkuhn/webanno3-docker.git | tee buildtest.log
 echo '\n'
 echo '\n'
 echo 'buildtest.log written to .'

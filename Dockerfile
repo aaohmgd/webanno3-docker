@@ -20,7 +20,7 @@ RUN service mysql start && \
 
 WORKDIR /opt
 # Download the latest webanno 3 release. change the path accordingly if updated
-RUN wget --no-check-certificate  https://github.com/webanno/webanno/releases/download/webanno-3.0.0-beta-5/webanno-webapp-3.0.0-beta-4.war
+RUN wget --no-check-certificate  https://github.com/webanno/webanno/releases/download/webanno-3.0.0-beta-5/webanno-webapp-3.0.0-beta-5.war
 
 # Create a tomcat7 instance of webanno to operate on port 18080 as
 # shown in the official admin guide
