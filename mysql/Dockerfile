@@ -8,4 +8,4 @@ RUN mysqld_safe --init-file=/tmp/mysql-init &
 RUN rm /tmp/mysql-init
 RUN mysql -u root < /tmp/create_webanno_db.sql
 
-CMD ["mysqld_safe"]
+CMD ["service", "mysql", "start"]
