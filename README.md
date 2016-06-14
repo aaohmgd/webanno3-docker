@@ -1,17 +1,6 @@
 Installation
 ============
 
-Recommended with docker-compose:
-Change to the projects main dir (which contains *docker-compose.yml* and execute 
-```shell
-docker-compose build 
-```
-
-
-
-
-to build the image separately:
-
 ```shell
 docker build -t webanno3 https://github.com/fkuhn/webanno3-docker.git
 ```
